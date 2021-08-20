@@ -14,4 +14,4 @@
 - API Documentation with Redoc /redoc.
 - /tasks    -- Get, POST, DELETE, PUT task.
 - /finish_task/<id>   -- finish task by id or /tasks/<id>  Method=PUT and Update task {'status': 'finished'}
-- /filter_task/<type>  -- Get tasks by type, type is finished or unfinished.
+- /filter_tasks/<type>  -- Get tasks by type, type is finished or unfinished.
