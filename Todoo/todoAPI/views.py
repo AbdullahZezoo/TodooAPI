@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
@@ -14,7 +14,10 @@ class TaskView(viewsets.ModelViewSet):
 
 @api_view(['GET'])
 def finish_task(request, id):
-    task = Task.objects.get(pk=id)
+    try:
+        task = Task.objects.get(pk=id)
+    except Task.DoesNotExist:
+        return HttpResponse(status=404)
     data = {
         "id": task.id,
         "title": task.title,
@@ -25,7 +28,10 @@ def finish_task(request, id):
     serializer = TaskSerializer(task, data=data)
     if serializer.is_valid():
         serializer.save()
-    return JsonResponse(data=serializer.data, status=200)
+        return JsonResponse(data=serializer.data, status=200)
+ 
+    return JsonResponse(serializer.errors, status=400)
+
 
 @api_view(['GET'])
 def filter_tasks(request, type):
